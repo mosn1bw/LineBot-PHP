@@ -1,2 +1,10 @@
 {
+    "name": "dicoding/line-bot-php",
+    "description": "Simple line bot using php slim framework",
+    "type": "project",
+    "require": {
+        "php": "^7.2",
+        "slim/slim": "^3.8",
+        "linecorp/line-bot-sdk": "^2.1"
+    }
 }
