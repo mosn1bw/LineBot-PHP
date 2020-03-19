@@ -172,7 +172,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setColor('#aaaaaa')
                                 ->setSize(ComponentFontSize::XS),
                               TextComponentBuilder::builder()
-                                ->setText(date("Y-m-d H:i:s", substr($data->features[0]->attributes->Last_Update, 0, 10))+" ")
+                                ->setText(date("Y-m-d H:i:s", substr($data->features[0]->attributes->Last_Update, 0, 10))." ")
                                 ->setColor('#aaaaaa')
                                 ->setAlign('end')
                                 ->setSize(ComponentFontSize::SM),
