@@ -118,6 +118,60 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setAlign('end')
                                 ->setSize(ComponentFontSize::SM),
                             ]),
+
+                          BoxComponentBuilder::builder()
+                          ->setLayout(ComponentLayout::HORIZONTAL)
+                          ->setContents([
+                            TextComponentBuilder::builder()
+                              ->setText("Jumlah positif")
+                              ->setColor('#555555')
+                              ->setSize(ComponentFontSize::SM),
+                            TextComponentBuilder::builder()
+                              ->setText($rawResponse->Active." ")
+                              ->setColor('#111111')
+                              ->setAlign('end')
+                              ->setSize(ComponentFontSize::SM),
+                          ]),
+
+                          BoxComponentBuilder::builder()
+                          ->setLayout(ComponentLayout::HORIZONTAL)
+                          ->setContents([
+                            TextComponentBuilder::builder()
+                              ->setText("Jumlah Sembuh")
+                              ->setColor('#555555')
+                              ->setSize(ComponentFontSize::SM),
+                            TextComponentBuilder::builder()
+                              ->setText($rawResponse->Recovered." ")
+                              ->setColor('#111111')
+                              ->setAlign('end')
+                              ->setSize(ComponentFontSize::SM),
+                          ]),
+                          BoxComponentBuilder::builder()
+                            ->setLayout(ComponentLayout::HORIZONTAL)
+                            ->setContents([
+                              TextComponentBuilder::builder()
+                                ->setText("Jumlah Meninggal")
+                                ->setColor('#555555')
+                                ->setSize(ComponentFontSize::SM),
+                              TextComponentBuilder::builder()
+                                ->setText($rawResponse->Deaths." ")
+                                ->setColor('#111111')
+                                ->setAlign('end')
+                                ->setSize(ComponentFontSize::SM),
+                            ]),
+                          BoxComponentBuilder::builder()
+                            ->setLayout(ComponentLayout::HORIZONTAL)
+                            ->setContents([
+                              TextComponentBuilder::builder()
+                                ->setText("Last Update")
+                                ->setColor('#aaaaaa')
+                                ->setSize(ComponentFontSize::XS),
+                              TextComponentBuilder::builder()
+                                ->setText(date("Y-m-d H:i:s", substr( $rawResponse->Last_Update, 0, 10))." ")
+                                ->setColor('#aaaaaa')
+                                ->setAlign('end')
+                                ->setSize(ComponentFontSize::SM),
+                            ]),
                       ])
                     )
                 );
