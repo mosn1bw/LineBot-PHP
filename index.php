@@ -77,7 +77,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
             $groupId     = $event['source']['groupId'];
             $result = $bot->replyText($event['replyToken'], $groupId);
             break;
-            
+
           case '/covid':
             $negara = isset($a[1]) ? $a[1] : 'indonesia';
             $data = file_get_contents("https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/1/query?f=json&where=(Country_Region%3D'$negara')&returnGeometry=false&spatialRef=esriSpatialRelIntersects&outFields=*&orderByFields=Country_Region%20asc,Province_State%20asc&resultOffset=0&resultRecordCount=250&cacheHint=false");
@@ -181,14 +181,6 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                           BoxComponentBuilder::builder()
                           ->setLayout(ComponentLayout::HORIZONTAL)
                           ->setContents([
-                            ButtonComponentBuilder::builder()
-                              ->setStyle(ComponentButtonStyle::SECONDARY)
-                              ->setAction(
-                                new MessageTemplateActionBuilder('Core', '/covidupdatecoredata')
-                              ),
-                            
-                            SeparatorComponentBuilder::builder()
-                              ->setMargin(ComponentMargin::SM),
                             ButtonComponentBuilder::builder()
                               ->setStyle(ComponentButtonStyle::PRIMARY)
                               ->setAction(
