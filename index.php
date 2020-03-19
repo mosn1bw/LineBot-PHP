@@ -123,20 +123,10 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               ->setWeight(ComponentFontWeight::BOLD)
                               ->setSize(ComponentFontSize::XXL),
 
-                          BoxComponentBuilder::builder()
-                            ->setLayout(ComponentLayout::HORIZONTAL)
-                            ->setContents([
-                              TextComponentBuilder::builder()
-                                ->setText("Total Kasus")
-                                ->setColor('#555555')
-                                ->setSize(ComponentFontSize::XXL),
-                              TextComponentBuilder::builder()
-                                ->setText($rawResponse->Confirmed." ")
-                                ->setColor('#111111')
-                                ->setAlign('end')
-                                ->setWeight(ComponentFontWeight::BOLD)
-                                ->setSize(ComponentFontSize::XXL),
-                            ]),
+                          TextComponentBuilder::builder()
+                              ->setText($rawResponse->Confirmed." Kasus")
+                              ->setWeight(ComponentFontWeight::BOLD)
+                              ->setSize(ComponentFontSize::XL),
                           SeparatorComponentBuilder::builder()
                             ->setMargin(ComponentMargin::XXL),
 
@@ -144,7 +134,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                           ->setLayout(ComponentLayout::HORIZONTAL)
                           ->setContents([
                             TextComponentBuilder::builder()
-                              ->setText("Jumlah positif")
+                              ->setText("positif")
                               ->setColor('#555555')
                               ->setSize(ComponentFontSize::SM),
                             TextComponentBuilder::builder()
@@ -159,7 +149,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                           ->setLayout(ComponentLayout::HORIZONTAL)
                           ->setContents([
                             TextComponentBuilder::builder()
-                              ->setText("Jumlah Sembuh")
+                              ->setText("Sembuh")
                               ->setColor('#555555')
                               ->setSize(ComponentFontSize::SM),
                             TextComponentBuilder::builder()
@@ -173,7 +163,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                             ->setLayout(ComponentLayout::HORIZONTAL)
                             ->setContents([
                               TextComponentBuilder::builder()
-                                ->setText("Jumlah Meninggal")
+                                ->setText("Meninggal")
                                 ->setColor('#555555')
                                 ->setSize(ComponentFontSize::SM),
                               TextComponentBuilder::builder()
