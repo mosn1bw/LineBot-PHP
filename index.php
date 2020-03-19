@@ -49,19 +49,19 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
   if(is_array($data['events'])){
     foreach ($data['events'] as $event){
       if ($event['type'] == 'message'){
-        $userId     = $event['source']['userId'];
-        $groupId     = $event['source']['groupId'];
         $getprofile = $bot->getProfile($userId);
         $profile    = $getprofile->getJSONDecodedBody();
         $greetings  = new TextMessageBuilder("Halo, ".$profile['displayName']);
         $a = (explode('-',$event['message']['text']));
         switch ($a[0]) {
           case '/userid':
+            $userId     = $event['source']['userId'];
             $result = $bot->replyText($event['replyToken'], $userId);
             break;
 
           case '/groupid':
-            $result = $bot->replyText($event['replyToken'], $event['source']['groupId']);
+            $groupId     = $event['source']['groupId'];
+            $result = $bot->replyText($event['replyToken'], $groupId);
             break;
 
           case '/covid':
@@ -79,154 +79,152 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 // "Total Terinfeksi : ".$rawResponse->Active."\n".
                 // "Total Sembuh : ".$rawResponse->Recovered."\n".
                 // "Total Meninggal : ".$rawResponse->Deaths;
-            $response='
-            {
-              "type": "bubble",
-              "body": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": "Covid-19",
-                    "weight": "bold",
-                    "color": "#1DB446",
-                    "size": "sm"
-                  },
-                  {
-                    "type": "text",
-                    "text": "'.$rawResponse->Country_Region.'",
-                    "weight": "bold",
-                    "size": "xxl",
-                    "margin": "md"
-                  },
-                  {
-                    "type": "separator",
-                    "margin": "xxl"
-                  },
-                  {
+                $response='
+                {
+                  "type": "bubble",
+                  "body": {
                     "type": "box",
                     "layout": "vertical",
-                    "margin": "xxl",
-                    "spacing": "sm",
                     "contents": [
                       {
+                        "type": "text",
+                        "text": "Covid-19",
+                        "weight": "bold",
+                        "color": "#1DB446",
+                        "size": "sm"
+                      },
+                      {
+                        "type": "text",
+                        "text": "'.$rawResponse->Country_Region.'",
+                        "weight": "bold",
+                        "size": "xxl",
+                        "margin": "md"
+                      },
+                      {
+                        "type": "separator",
+                        "margin": "xxl"
+                      },
+                      {
                         "type": "box",
-                        "layout": "horizontal",
+                        "layout": "vertical",
+                        "margin": "xxl",
+                        "spacing": "sm",
                         "contents": [
                           {
-                            "type": "text",
-                            "text": "Jumlah Kasus",
-                            "size": "sm",
-                            "color": "#555555",
-                            "flex": 0
+                            "type": "box",
+                            "layout": "horizontal",
+                            "contents": [
+                              {
+                                "type": "text",
+                                "text": "Jumlah Kasus",
+                                "size": "sm",
+                                "color": "#555555",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "text": "'.$rawResponse->Confirmed.'",
+                                "size": "sm",
+                                "color": "#111111",
+                                "align": "end"
+                              }
+                            ]
                           },
                           {
-                            "type": "text",
-                            "text": "'.$rawResponse->Confirmed.'",
-                            "size": "sm",
-                            "color": "#111111",
-                            "align": "end"
+                            "type": "box",
+                            "layout": "horizontal",
+                            "contents": [
+                              {
+                                "type": "text",
+                                "text": "Total Terinfeksi",
+                                "size": "sm",
+                                "color": "#555555",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "text": "'.$rawResponse->Active.'",
+                                "size": "sm",
+                                "color": "#111111",
+                                "align": "end"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "box",
+                            "layout": "horizontal",
+                            "contents": [
+                              {
+                                "type": "text",
+                                "text": "Jumlah Sembuh",
+                                "size": "sm",
+                                "color": "#555555",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "text": "'.$rawResponse->Recovered.'",
+                                "size": "sm",
+                                "color": "#111111",
+                                "align": "end"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "box",
+                            "layout": "horizontal",
+                            "contents": [
+                              {
+                                "type": "text",
+                                "text": "Total Meninggal",
+                                "size": "sm",
+                                "color": "#555555",
+                                "flex": 0
+                              },
+                              {
+                                "type": "text",
+                                "text": "'.$rawResponse->Deaths.'",
+                                "size": "sm",
+                                "color": "#111111",
+                                "align": "end"
+                              }
+                            ]
                           }
                         ]
                       },
                       {
-                        "type": "box",
-                        "layout": "horizontal",
-                        "contents": [
-                          {
-                            "type": "text",
-                            "text": "Total Terinfeksi",
-                            "size": "sm",
-                            "color": "#555555",
-                            "flex": 0
-                          },
-                          {
-                            "type": "text",
-                            "text": "'.$rawResponse->Active.'",
-                            "size": "sm",
-                            "color": "#111111",
-                            "align": "end"
-                          }
-                        ]
+                        "type": "separator",
+                        "margin": "xxl"
                       },
                       {
                         "type": "box",
                         "layout": "horizontal",
+                        "margin": "md",
                         "contents": [
                           {
                             "type": "text",
-                            "text": "Jumlah Sembuh",
-                            "size": "sm",
-                            "color": "#555555",
+                            "text": "Last Update",
+                            "size": "xs",
+                            "color": "#aaaaaa",
                             "flex": 0
                           },
                           {
                             "type": "text",
-                            "text": "'.$rawResponse->Recovered.'",
-                            "size": "sm",
-                            "color": "#111111",
-                            "align": "end"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "box",
-                        "layout": "horizontal",
-                        "contents": [
-                          {
-                            "type": "text",
-                            "text": "Total Meninggal",
-                            "size": "sm",
-                            "color": "#555555",
-                            "flex": 0
-                          },
-                          {
-                            "type": "text",
-                            "text": "'.$rawResponse->Deaths.'",
-                            "size": "sm",
-                            "color": "#111111",
+                            "text": "'.date("Y-m-d H:i:s", substr( $rawResponse->Last_Update, 0, 10)).'",
+                            "color": "#aaaaaa",
+                            "size": "xs",
                             "align": "end"
                           }
                         ]
                       }
                     ]
                   },
-                  {
-                    "type": "separator",
-                    "margin": "xxl"
-                  },
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "margin": "md",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "Last Update",
-                        "size": "xs",
-                        "color": "#aaaaaa",
-                        "flex": 0
-                      },
-                      {
-                        "type": "text",
-                        "text": "'.date("Y-m-d H:i:s", substr( $rawResponse->Last_Update, 0, 10)).'",
-                        "color": "#aaaaaa",
-                        "size": "xs",
-                        "align": "end"
-                      }
-                    ]
+                  "styles": {
+                    "footer": {
+                      "separator": true
+                    }
                   }
-                ]
-              },
-              "styles": {
-                "footer": {
-                  "separator": true
-                }
-              }
-            }
-            
-            ';
+                }';
             }
             
             $result = $bot->replyText($event['replyToken'],$response);

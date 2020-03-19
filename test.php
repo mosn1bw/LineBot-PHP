@@ -14,7 +14,7 @@ foreach ($data->features as $value) {
     "Total Terinfeksi : ".$rawResponse->Active."\n".
     "Total Sembuh : ".$rawResponse->Recovered."\n".
     "Total Meninggal : ".$rawResponse->Deaths."\n".
-    "Update : ".date("Y-m-d H:i:s", substr( $rawResponse->Last_Update, 0, 10));
+    "Update : ".date("Y-m-d H:i:s", substr( $rawResponse->Last_Update, 0, 10))
     ;
 }
 echo $response;
