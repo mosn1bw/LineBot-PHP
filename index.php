@@ -105,19 +105,19 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                           SeparatorComponentBuilder::builder()
                             ->setMargin(ComponentMargin::XXL),
 
-                          // BoxComponentBuilder::builder()
-                          //   ->setLayout(ComponentLayout::HORIZONTAL)
-                          //   ->setContents([
-                          //     TextComponentBuilder::builder()
-                          //       ->setText("Jumlah Kasus")
-                          //       ->setColor('#555555')
-                          //       ->setSize(ComponentFontSize::SM),
-                          //     TextComponentBuilder::builder()
-                          //       ->setText($rawResponse->Confirmed)
-                          //       ->setColor('#111111')
-                          //       ->setAlign('end')
-                          //       ->setSize(ComponentFontSize::SM),
-                          //   ]),
+                          BoxComponentBuilder::builder()
+                            ->setLayout(ComponentLayout::HORIZONTAL)
+                            ->setContents([
+                              TextComponentBuilder::builder()
+                                ->setText("Jumlah Kasus")
+                                ->setColor('#555555')
+                                ->setSize(ComponentFontSize::SM),
+                              TextComponentBuilder::builder()
+                                ->setText($rawResponse->Confirmed." ")
+                                ->setColor('#111111')
+                                ->setAlign('end')
+                                ->setSize(ComponentFontSize::SM),
+                            ]),
                       ])
                     )
                 );
