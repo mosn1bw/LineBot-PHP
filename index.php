@@ -122,23 +122,23 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               ->setText($rawResponse->Country_Region)
                               ->setWeight(ComponentFontWeight::BOLD)
                               ->setSize(ComponentFontSize::XXL),
-                          SeparatorComponentBuilder::builder()
-                            ->setMargin(ComponentMargin::XXL),
 
                           BoxComponentBuilder::builder()
                             ->setLayout(ComponentLayout::HORIZONTAL)
                             ->setContents([
                               TextComponentBuilder::builder()
-                                ->setText("Jumlah Kasus")
+                                ->setText("Total Kasus")
                                 ->setColor('#555555')
-                                ->setSize(ComponentFontSize::SM),
+                                ->setSize(ComponentFontSize::XXL),
                               TextComponentBuilder::builder()
                                 ->setText($rawResponse->Confirmed." ")
                                 ->setColor('#111111')
                                 ->setAlign('end')
                                 ->setWeight(ComponentFontWeight::BOLD)
-                                ->setSize(ComponentFontSize::SM),
+                                ->setSize(ComponentFontSize::XXL),
                             ]),
+                          SeparatorComponentBuilder::builder()
+                            ->setMargin(ComponentMargin::XXL),
 
                           BoxComponentBuilder::builder()
                           ->setLayout(ComponentLayout::HORIZONTAL)
