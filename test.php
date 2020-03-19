@@ -20,7 +20,7 @@ foreach ( $data->features as $value) {
     $mati +=$rawResponse->Deaths;
 }
 echo $data->features[0]->attributes->Last_Update;
-
+echo " ";
 echo $total ." ".$positif." ".$sembuh." ".$mati;
 // $response="";
 // foreach ($data->features as $value) {
