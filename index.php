@@ -74,12 +74,161 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
             $response="";
             foreach ($data->features as $value) {
                 $rawResponse = $value->attributes;
-                $response.="Negara : ".$rawResponse->Country_Region."\n".
-                "Jumlah Kasus : ".$rawResponse->Confirmed."\n".
-                "Total Terinfeksi : ".$rawResponse->Active."\n".
-                "Total Sembuh : ".$rawResponse->Recovered."\n".
-                "Total Meninggal : ".$rawResponse->Deaths."\n";
+                // $response.="Negara : ".$rawResponse->Country_Region."\n".
+                // "Jumlah Kasus : ".$rawResponse->Confirmed."\n".
+                // "Total Terinfeksi : ".$rawResponse->Active."\n".
+                // "Total Sembuh : ".$rawResponse->Recovered."\n".
+                // "Total Meninggal : ".$rawResponse->Deaths;
+            $response='
+            {
+              "type": "bubble",
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "Covid-19",
+                    "weight": "bold",
+                    "color": "#1DB446",
+                    "size": "sm"
+                  },
+                  {
+                    "type": "text",
+                    "text": "'.$rawResponse->Country_Region.'",
+                    "weight": "bold",
+                    "size": "xxl",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "separator",
+                    "margin": "xxl"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "vertical",
+                    "margin": "xxl",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                          {
+                            "type": "text",
+                            "text": "Jumlah Kasus",
+                            "size": "sm",
+                            "color": "#555555",
+                            "flex": 0
+                          },
+                          {
+                            "type": "text",
+                            "text": "'.$rawResponse->Confirmed.'",
+                            "size": "sm",
+                            "color": "#111111",
+                            "align": "end"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                          {
+                            "type": "text",
+                            "text": "Total Terinfeksi",
+                            "size": "sm",
+                            "color": "#555555",
+                            "flex": 0
+                          },
+                          {
+                            "type": "text",
+                            "text": "'.$rawResponse->Active.'",
+                            "size": "sm",
+                            "color": "#111111",
+                            "align": "end"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                          {
+                            "type": "text",
+                            "text": "Jumlah Sembuh",
+                            "size": "sm",
+                            "color": "#555555",
+                            "flex": 0
+                          },
+                          {
+                            "type": "text",
+                            "text": "'.$rawResponse->Recovered.'",
+                            "size": "sm",
+                            "color": "#111111",
+                            "align": "end"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                          {
+                            "type": "text",
+                            "text": "Total Meninggal",
+                            "size": "sm",
+                            "color": "#555555",
+                            "flex": 0
+                          },
+                          {
+                            "type": "text",
+                            "text": "'.$rawResponse->Deaths.'",
+                            "size": "sm",
+                            "color": "#111111",
+                            "align": "end"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "separator",
+                    "margin": "xxl"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "md",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "Last Update",
+                        "size": "xs",
+                        "color": "#aaaaaa",
+                        "flex": 0
+                      },
+                      {
+                        "type": "text",
+                        "text": "'.date("Y-m-d H:i:s", substr( $rawResponse->Last_Update, 0, 10)).'",
+                        "color": "#aaaaaa",
+                        "size": "xs",
+                        "align": "end"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "styles": {
+                "footer": {
+                  "separator": true
+                }
+              }
             }
+            
+            ';
+            }
+            
             $result = $bot->replyText($event['replyToken'],$response);
             break;
           
