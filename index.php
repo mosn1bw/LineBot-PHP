@@ -112,50 +112,13 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setColor('#17c950'),
                         ])
                     )
-                    ->setBody(
-                        BoxComponentBuilder::builder()
-                        ->setLayout(ComponentLayout::VERTICAL)
-                        ->setSpacing(ComponentSpacing::SM)
-                        ->setContents([
-                            TextComponentBuilder::builder()
-                                ->setText('📢  test')
-                                ->setWrap(true)
-                                ->setWeight(ComponentFontWeight::BOLD)
-                                ->setSize(ComponentFontSize::LG),
-                            SeparatorComponentBuilder::builder(),
-                            BoxComponentBuilder::builder()
-                                ->setLayout(ComponentLayout::BASELINE)
-                                ->setContents([
-                                    TextComponentBuilder::builder()
-                                        ->setText('test test testsetsetset')
-                                        ->setWrap(true)
-                                ]),
-                        ])
-                    )
-                    ->setFooter(
-                        BoxComponentBuilder::builder()
-                        ->setLayout(ComponentLayout::VERTICAL)
-                        ->setSpacing(ComponentSpacing::SM)
-                        ->setContents([
-                            ButtonComponentBuilder::builder()
-                                ->setStyle(ComponentButtonStyle::PRIMARY)
-                                ->setAction(
-                                    new UriTemplateActionBuilder('👍 Add Friends', 'https://google.com')
-                                ),
-                            ButtonComponentBuilder::builder()
-                                ->setStyle(ComponentButtonStyle::SECONDARY)
-                                ->setAction(
-                                    new UriTemplateActionBuilder('🌐 Website', 'https://google.com')
-                            )
-                        ])
-                    )
                 );
 
             }
 
             // $bot->replyMessage($token, $message);
             $result = $bot->replyMessage($event['replyToken'],$response);
-            var_dump($result);
+            return $result;
             break;
           
           default:
