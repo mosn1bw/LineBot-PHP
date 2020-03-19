@@ -162,6 +162,9 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setAlign('end')
                                 ->setSize(ComponentFontSize::SM),
                             ]),
+
+                          SeparatorComponentBuilder::builder()
+                            ->setMargin(ComponentMargin::XXL),
                           BoxComponentBuilder::builder()
                             ->setLayout(ComponentLayout::HORIZONTAL)
                             ->setContents([
@@ -175,11 +178,13 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setAlign('end')
                                 ->setSize(ComponentFontSize::SM),
                             ]),
-                            ButtonComponentBuilder::builder()
-                            ->setStyle(ComponentButtonStyle::SECONDARY)
-                            ->setAction(
-                                new MessageTemplateActionBuilder('Update', '/covid '.$negara)
-                        )
+                          SeparatorComponentBuilder::builder()
+                            ->setMargin(ComponentMargin::XXL),
+                          ButtonComponentBuilder::builder()
+                          ->setStyle(ComponentButtonStyle::PRIMARY)
+                          ->setAction(
+                            new MessageTemplateActionBuilder('Update', '/covid '.$negara)
+                          )
                       ])
                     )
                 );
