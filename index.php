@@ -79,164 +79,68 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 // "Total Terinfeksi : ".$rawResponse->Active."\n".
                 // "Total Sembuh : ".$rawResponse->Recovered."\n".
                 // "Total Meninggal : ".$rawResponse->Deaths;
-                $response='{
-                  "type": "bubble",
-                  "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "Covid-19",
-                        "weight": "bold",
-                        "color": "#1DB446",
-                        "size": "sm"
-                      },
-                      {
-                        "type": "text",
-                        "text": "Indonesia",
-                        "weight": "bold",
-                        "size": "xxl",
-                        "margin": "md"
-                      },
-                      {
-                        "type": "separator",
-                        "margin": "xxl"
-                      },
-                      {
-                        "type": "box",
-                        "layout": "vertical",
-                        "margin": "xxl",
-                        "spacing": "sm",
-                        "contents": [
-                          {
-                            "type": "box",
-                            "layout": "horizontal",
-                            "contents": [
-                              {
-                                "type": "text",
-                                "text": "Jumlah Kasus",
-                                "size": "sm",
-                                "color": "#555555",
-                                "flex": 0
-                              },
-                              {
-                                "type": "text",
-                                "text": "11111",
-                                "size": "sm",
-                                "color": "#111111",
-                                "align": "end"
-                              }
-                            ]
-                          },
-                          {
-                            "type": "box",
-                            "layout": "horizontal",
-                            "contents": [
-                              {
-                                "type": "text",
-                                "text": "Total Terinfeksi",
-                                "size": "sm",
-                                "color": "#555555",
-                                "flex": 0
-                              },
-                              {
-                                "type": "text",
-                                "text": "11111",
-                                "size": "sm",
-                                "color": "#111111",
-                                "align": "end"
-                              }
-                            ]
-                          },
-                          {
-                            "type": "box",
-                            "layout": "horizontal",
-                            "contents": [
-                              {
-                                "type": "text",
-                                "text": "Jumlah Sembuh",
-                                "size": "sm",
-                                "color": "#555555",
-                                "flex": 0
-                              },
-                              {
-                                "type": "text",
-                                "text": "11111",
-                                "size": "sm",
-                                "color": "#111111",
-                                "align": "end"
-                              }
-                            ]
-                          },
-                          {
-                            "type": "box",
-                            "layout": "horizontal",
-                            "contents": [
-                              {
-                                "type": "text",
-                                "text": "Total Meninggal",
-                                "size": "sm",
-                                "color": "#555555",
-                                "flex": 0
-                              },
-                              {
-                                "type": "text",
-                                "text": "999",
-                                "size": "sm",
-                                "color": "#111111",
-                                "align": "end"
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "type": "separator",
-                        "margin": "xxl"
-                      },
-                      {
-                        "type": "box",
-                        "layout": "horizontal",
-                        "margin": "md",
-                        "contents": [
-                          {
-                            "type": "text",
-                            "text": "UPDATE AT",
-                            "size": "xs",
-                            "color": "#aaaaaa",
-                            "flex": 0
-                          },
-                          {
-                            "type": "text",
-                            "text": "#743289384279",
-                            "color": "#aaaaaa",
-                            "size": "xs",
-                            "align": "end"
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  "styles": {
-                    "footer": {
-                      "separator": true
-                    }
-                  }
-                }';
+                $response = FlexMessageBuilder::builder()
+                ->setAltText('test')
+                ->setContents(
+                    BubbleContainerBuilder::builder()
+                    ->setHeader(
+                        BoxComponentBuilder::builder()
+                        ->setLayout(ComponentLayout::VERTICAL)
+                        ->setContents([
+                            TextComponentBuilder::builder()
+                                ->setText('Covid-19')
+                                ->setWeight(ComponentFontWeight::BOLD)
+                                ->setColor('#1DB446'),
+                            TextComponentBuilder::builder()
+                                ->setText($rawResponse->Country_Region)
+                                ->setWeight(ComponentFontWeight::BOLD)
+                                ->setSize("xxl")
+                                ->setColor('#17c950'),
+                        ])
+                    )
+                    ->setBody(
+                        BoxComponentBuilder::builder()
+                        ->setLayout(ComponentLayout::VERTICAL)
+                        ->setSpacing(ComponentSpacing::SM)
+                        ->setContents([
+                            TextComponentBuilder::builder()
+                                ->setText('📢  test')
+                                ->setWrap(true)
+                                ->setWeight(ComponentFontWeight::BOLD)
+                                ->setSize(ComponentFontSize::LG),
+                            SeparatorComponentBuilder::builder(),
+                            BoxComponentBuilder::builder()
+                                ->setLayout(ComponentLayout::BASELINE)
+                                ->setContents([
+                                    TextComponentBuilder::builder()
+                                        ->setText('test test testsetsetset')
+                                        ->setWrap(true)
+                                ]),
+                        ])
+                    )
+                    ->setFooter(
+                        BoxComponentBuilder::builder()
+                        ->setLayout(ComponentLayout::VERTICAL)
+                        ->setSpacing(ComponentSpacing::SM)
+                        ->setContents([
+                            ButtonComponentBuilder::builder()
+                                ->setStyle(ComponentButtonStyle::PRIMARY)
+                                ->setAction(
+                                    new UriTemplateActionBuilder('👍 Add Friends', 'https://google.com')
+                                ),
+                            ButtonComponentBuilder::builder()
+                                ->setStyle(ComponentButtonStyle::SECONDARY)
+                                ->setAction(
+                                    new UriTemplateActionBuilder('🌐 Website', 'https://google.com')
+                            )
+                        ])
+                    )
+                );
+
             }
-              
-            $result = $httpClient->post(
-              'https://api.line.me/v2/bot/message/reply', [
-                'replyToken' => $event['replyToken'],
-                'messages'   => [[
-                  'type'     => 'flex',
-                  'altText'  => 'Covid',
-                  'contents' => json_decode($response)
-                ]],
-              ]
-            );
-            // $result = $bot->replyText($event['replyToken'],$response);
+
+            // $bot->replyMessage($token, $message);
+            $result = $bot->replyMessage($event['replyToken'],$response);
             break;
           
           default:
