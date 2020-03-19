@@ -83,8 +83,8 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
             $data = json_decode($data);
             $countryData=[];
             foreach ($data->features as $value) {
-                $countryData[strtolower($value->attributes->Country_Region)]['Lat']=(int)$value->attributes->Lat;
-                $countryData[strtolower($value->attributes->Country_Region)]['Long_']=(int)$value->attributes->Long_;
+                $countryData[strtolower($value->attributes->Country_Region)]['Lat']=number_format($value->attributes->Lat, 4, '.', '');
+                $countryData[strtolower($value->attributes->Country_Region)]['Long_']=number_format($value->attributes->Long_, 4, '.', '');
             }
             $myfile = fopen("countryData.json", "w") or die("Unable to open file!");
             fwrite($myfile, json_encode($countryData));
@@ -193,11 +193,22 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setAlign('end')
                                 ->setSize(ComponentFontSize::SM),
                             ]),
-                          ButtonComponentBuilder::builder()
-                          ->setStyle(ComponentButtonStyle::PRIMARY)
-                          ->setAction(
-                            new MessageTemplateActionBuilder('Update', '/covid-'.$negara)
-                          )
+                          
+                          BoxComponentBuilder::builder()
+                          ->setLayout(ComponentLayout::HORIZONTAL)
+                          ->setContents([
+                            ButtonComponentBuilder::builder()
+                            ->setStyle(ComponentButtonStyle::PRIMARY)
+                            ->setAction(
+                              new MessageTemplateActionBuilder('Core', '/covidupdatecoredata')
+                            ),
+                            
+                            ButtonComponentBuilder::builder()
+                            ->setStyle(ComponentButtonStyle::PRIMARY)
+                            ->setAction(
+                              new MessageTemplateActionBuilder('Update', '/covid-'.$negara)
+                            )
+                          ]),
                       ])
                     )
                 );

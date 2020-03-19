@@ -3,8 +3,8 @@ $data =  file_get_contents('https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis
 $data = json_decode($data);
 $countryData=[];
 foreach ($data->features as $value) {
-    $countryData[strtolower($value->attributes->Country_Region)]['Lat']=(int)$value->attributes->Lat;
-    $countryData[strtolower($value->attributes->Country_Region)]['Long_']=(int)$value->attributes->Long_;
+    $countryData[strtolower($value->attributes->Country_Region)]['Lat']=number_format($value->attributes->Lat, 4, '.', '');
+    $countryData[strtolower($value->attributes->Country_Region)]['Long_']=number_format($value->attributes->Long_, 4, '.', '');
 }
 $myfile = fopen("countryData.json", "w") or die("Unable to open file!");
 fwrite($myfile, json_encode($countryData));
