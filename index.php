@@ -203,16 +203,18 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                           ->setLayout(ComponentLayout::HORIZONTAL)
                           ->setContents([
                             ButtonComponentBuilder::builder()
-                            ->setStyle(ComponentButtonStyle::PRIMARY)
-                            ->setAction(
-                              new MessageTemplateActionBuilder('Core', '/covidupdatecoredata')
-                            ),
+                              ->setStyle(ComponentButtonStyle::PRIMARY)
+                              ->setAction(
+                                new MessageTemplateActionBuilder('Core', '/covidupdatecoredata')
+                              ),
                             
+                            SeparatorComponentBuilder::builder()
+                              ->setMargin(ComponentMargin::SM),
                             ButtonComponentBuilder::builder()
-                            ->setStyle(ComponentButtonStyle::PRIMARY)
-                            ->setAction(
-                              new MessageTemplateActionBuilder('Update', '/covid-'.$negara)
-                            )
+                              ->setStyle(ComponentButtonStyle::PRIMARY)
+                              ->setAction(
+                                new MessageTemplateActionBuilder('Update', '/covid-'.$negara)
+                              )
                           ]),
                       ])
                     )
