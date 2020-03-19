@@ -84,7 +84,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
             fclose($countryDataFile);
             $negara = isset($a[1]) ? $a[1] : 'indonesia';
             $parameter = $countryData[strtolower(trim($negara))];
-            $data = file_get_contents('https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/1/query?f=json&where=(OBJECTID%3D'.$parameter.')&returnGeometry=false&spatialRef=esriSpatialRelIntersects&outFields=*&orderByFields=Country_Region%20asc,Province_State%20asc&resultOffset=0&resultRecordCount=250&cacheHint=false');
+            $data = file_get_contents('https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/1/query?f=json&where=(Lat%3D'.$parameter['lat'].')%20OR%20(Long_%3D'.$parameter['Long_'].')&returnGeometry=false&spatialRef=esriSpatialRelIntersects&outFields=*&orderByFields=Country_Region%20asc,Province_State%20asc&resultOffset=0&resultRecordCount=250&cacheHint=false');
             $data= json_decode($data);
             $rawResponse = $data->features[0]->attributes;
             $response = FlexMessageBuilder::builder()
