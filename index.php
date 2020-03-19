@@ -83,117 +83,116 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
             $countryData = json_decode(fgets($countryDataFile), true);
             fclose($countryDataFile);
             $negara = isset($a[1]) ? $a[1] : 'indonesia';
-            $parameter = $countryData[strtolower(trim($negara))];
-            $data = file_get_contents('https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/1/query?f=json&where=(OBJECTID%3D'.$parameter.')&returnGeometry=false&spatialRef=esriSpatialRelIntersects&outFields=*&orderByFields=Country_Region%20asc,Province_State%20asc&resultOffset=0&resultRecordCount=250&cacheHint=false');
-            $data= json_decode($data);
-            $rawResponse = $data->features[0]->attributes;
-            $response = FlexMessageBuilder::builder()
-                ->setAltText('test')
-                ->setContents(
-                    BubbleContainerBuilder::builder()
-                    ->setBody(
-                        BoxComponentBuilder::builder()
-                        ->setLayout(ComponentLayout::VERTICAL)
-                        ->setSpacing(ComponentSpacing::SM)
-                        ->setContents([
-                          TextComponentBuilder::builder()
-                              ->setText('Covid-19')
-                              ->setSize(ComponentFontSize::SM)
-                              ->setWeight(ComponentFontWeight::BOLD)
-                              ->setColor('#1DB446'),
-                          TextComponentBuilder::builder()
-                              ->setText($rawResponse->Country_Region)
-                              ->setWeight(ComponentFontWeight::BOLD)
-                              ->setSize(ComponentFontSize::XXL),
-                          SeparatorComponentBuilder::builder()
-                            ->setMargin(ComponentMargin::XXL),
+            $result = $bot->replyText($event['replyToken'],$negara);
+            // $parameter = $countryData[strtolower(trim($negara))];
+            // $data = file_get_contents('https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/1/query?f=json&where=(OBJECTID%3D'.$parameter.')&returnGeometry=false&spatialRef=esriSpatialRelIntersects&outFields=*&orderByFields=Country_Region%20asc,Province_State%20asc&resultOffset=0&resultRecordCount=250&cacheHint=false');
+            // $data= json_decode($data);
+            // $rawResponse = $data->features[0]->attributes;
+            // $response = FlexMessageBuilder::builder()
+            //     ->setAltText('test')
+            //     ->setContents(
+            //         BubbleContainerBuilder::builder()
+            //         ->setBody(
+            //             BoxComponentBuilder::builder()
+            //             ->setLayout(ComponentLayout::VERTICAL)
+            //             ->setSpacing(ComponentSpacing::SM)
+            //             ->setContents([
+            //               TextComponentBuilder::builder()
+            //                   ->setText('Covid-19')
+            //                   ->setSize(ComponentFontSize::SM)
+            //                   ->setWeight(ComponentFontWeight::BOLD)
+            //                   ->setColor('#1DB446'),
+            //               TextComponentBuilder::builder()
+            //                   ->setText($rawResponse->Country_Region)
+            //                   ->setWeight(ComponentFontWeight::BOLD)
+            //                   ->setSize(ComponentFontSize::XXL),
+            //               SeparatorComponentBuilder::builder()
+            //                 ->setMargin(ComponentMargin::XXL),
 
-                          BoxComponentBuilder::builder()
-                            ->setLayout(ComponentLayout::HORIZONTAL)
-                            ->setContents([
-                              TextComponentBuilder::builder()
-                                ->setText("Jumlah Kasus")
-                                ->setColor('#555555')
-                                ->setSize(ComponentFontSize::SM),
-                              TextComponentBuilder::builder()
-                                ->setText($rawResponse->Confirmed." ")
-                                ->setColor('#111111')
-                                ->setAlign('end')
-                                ->setWeight(ComponentFontWeight::BOLD)
-                                ->setSize(ComponentFontSize::SM),
-                            ]),
+            //               BoxComponentBuilder::builder()
+            //                 ->setLayout(ComponentLayout::HORIZONTAL)
+            //                 ->setContents([
+            //                   TextComponentBuilder::builder()
+            //                     ->setText("Jumlah Kasus")
+            //                     ->setColor('#555555')
+            //                     ->setSize(ComponentFontSize::SM),
+            //                   TextComponentBuilder::builder()
+            //                     ->setText($rawResponse->Confirmed." ")
+            //                     ->setColor('#111111')
+            //                     ->setAlign('end')
+            //                     ->setWeight(ComponentFontWeight::BOLD)
+            //                     ->setSize(ComponentFontSize::SM),
+            //                 ]),
 
-                          BoxComponentBuilder::builder()
-                          ->setLayout(ComponentLayout::HORIZONTAL)
-                          ->setContents([
-                            TextComponentBuilder::builder()
-                              ->setText("Jumlah positif")
-                              ->setColor('#555555')
-                              ->setSize(ComponentFontSize::SM),
-                            TextComponentBuilder::builder()
-                              ->setText($rawResponse->Active." ")
-                              ->setColor('#111111')
-                              ->setAlign('end')
-                              ->setWeight(ComponentFontWeight::BOLD)
-                              ->setSize(ComponentFontSize::SM),
-                          ]),
+            //               BoxComponentBuilder::builder()
+            //               ->setLayout(ComponentLayout::HORIZONTAL)
+            //               ->setContents([
+            //                 TextComponentBuilder::builder()
+            //                   ->setText("Jumlah positif")
+            //                   ->setColor('#555555')
+            //                   ->setSize(ComponentFontSize::SM),
+            //                 TextComponentBuilder::builder()
+            //                   ->setText($rawResponse->Active." ")
+            //                   ->setColor('#111111')
+            //                   ->setAlign('end')
+            //                   ->setWeight(ComponentFontWeight::BOLD)
+            //                   ->setSize(ComponentFontSize::SM),
+            //               ]),
 
-                          BoxComponentBuilder::builder()
-                          ->setLayout(ComponentLayout::HORIZONTAL)
-                          ->setContents([
-                            TextComponentBuilder::builder()
-                              ->setText("Jumlah Sembuh")
-                              ->setColor('#555555')
-                              ->setSize(ComponentFontSize::SM),
-                            TextComponentBuilder::builder()
-                              ->setText($rawResponse->Recovered." ")
-                              ->setColor('#111111')
-                              ->setWeight(ComponentFontWeight::BOLD)
-                              ->setAlign('end')
-                              ->setSize(ComponentFontSize::SM),
-                          ]),
-                          BoxComponentBuilder::builder()
-                            ->setLayout(ComponentLayout::HORIZONTAL)
-                            ->setContents([
-                              TextComponentBuilder::builder()
-                                ->setText("Jumlah Meninggal")
-                                ->setColor('#555555')
-                                ->setSize(ComponentFontSize::SM),
-                              TextComponentBuilder::builder()
-                                ->setText($rawResponse->Deaths." ")
-                                ->setColor('#111111')
-                                ->setAlign('end')
-                                ->setWeight(ComponentFontWeight::BOLD)
-                                ->setSize(ComponentFontSize::SM),
-                            ]),
+            //               BoxComponentBuilder::builder()
+            //               ->setLayout(ComponentLayout::HORIZONTAL)
+            //               ->setContents([
+            //                 TextComponentBuilder::builder()
+            //                   ->setText("Jumlah Sembuh")
+            //                   ->setColor('#555555')
+            //                   ->setSize(ComponentFontSize::SM),
+            //                 TextComponentBuilder::builder()
+            //                   ->setText($rawResponse->Recovered." ")
+            //                   ->setColor('#111111')
+            //                   ->setWeight(ComponentFontWeight::BOLD)
+            //                   ->setAlign('end')
+            //                   ->setSize(ComponentFontSize::SM),
+            //               ]),
+            //               BoxComponentBuilder::builder()
+            //                 ->setLayout(ComponentLayout::HORIZONTAL)
+            //                 ->setContents([
+            //                   TextComponentBuilder::builder()
+            //                     ->setText("Jumlah Meninggal")
+            //                     ->setColor('#555555')
+            //                     ->setSize(ComponentFontSize::SM),
+            //                   TextComponentBuilder::builder()
+            //                     ->setText($rawResponse->Deaths." ")
+            //                     ->setColor('#111111')
+            //                     ->setAlign('end')
+            //                     ->setWeight(ComponentFontWeight::BOLD)
+            //                     ->setSize(ComponentFontSize::SM),
+            //                 ]),
 
-                          SeparatorComponentBuilder::builder()
-                            ->setMargin(ComponentMargin::XXL),
-                          BoxComponentBuilder::builder()
-                            ->setLayout(ComponentLayout::HORIZONTAL)
-                            ->setContents([
-                              TextComponentBuilder::builder()
-                                ->setText("Last Update")
-                                ->setColor('#aaaaaa')
-                                ->setSize(ComponentFontSize::XS),
-                              TextComponentBuilder::builder()
-                                ->setText(date("Y-m-d H:i:s", substr( $rawResponse->Last_Update, 0, 10))." ")
-                                ->setColor('#aaaaaa')
-                                ->setAlign('end')
-                                ->setSize(ComponentFontSize::SM),
-                            ]),
-                          SeparatorComponentBuilder::builder()
-                            ->setMargin(ComponentMargin::XXL),
-                          ButtonComponentBuilder::builder()
-                          ->setStyle(ComponentButtonStyle::PRIMARY)
-                          ->setAction(
-                            new MessageTemplateActionBuilder('Update', '/covid '.$negara)
-                          )
-                      ])
-                    )
-                );
-            $result = $bot->replyMessage($event['replyToken'],$response);
-            return $result;
+            //               SeparatorComponentBuilder::builder()
+            //                 ->setMargin(ComponentMargin::XXL),
+            //               BoxComponentBuilder::builder()
+            //                 ->setLayout(ComponentLayout::HORIZONTAL)
+            //                 ->setContents([
+            //                   TextComponentBuilder::builder()
+            //                     ->setText("Last Update")
+            //                     ->setColor('#aaaaaa')
+            //                     ->setSize(ComponentFontSize::XS),
+            //                   TextComponentBuilder::builder()
+            //                     ->setText(date("Y-m-d H:i:s", substr( $rawResponse->Last_Update, 0, 10))." ")
+            //                     ->setColor('#aaaaaa')
+            //                     ->setAlign('end')
+            //                     ->setSize(ComponentFontSize::SM),
+            //                 ]),
+            //               ButtonComponentBuilder::builder()
+            //               ->setStyle(ComponentButtonStyle::PRIMARY)
+            //               ->setAction(
+            //                 new MessageTemplateActionBuilder('Update', '/covid '.$negara)
+            //               )
+            //           ])
+            //         )
+            //     );
+            // $result = $bot->replyMessage($event['replyToken'],$response);
+            // return $result;
             break;
           default:
             # code...
