@@ -122,14 +122,14 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               ->setText($rawResponse->Country_Region)
                               ->setWeight(ComponentFontWeight::BOLD)
                               ->setSize(ComponentFontSize::XXL),
+                          SeparatorComponentBuilder::builder()
+                            ->setMargin(ComponentMargin::XXL),
+
 
                           TextComponentBuilder::builder()
                               ->setText($rawResponse->Confirmed." Kasus")
                               ->setWeight(ComponentFontWeight::BOLD)
                               ->setSize(ComponentFontSize::XL),
-                          SeparatorComponentBuilder::builder()
-                            ->setMargin(ComponentMargin::XXL),
-
                           BoxComponentBuilder::builder()
                           ->setLayout(ComponentLayout::HORIZONTAL)
                           ->setContents([
