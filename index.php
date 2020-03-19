@@ -155,6 +155,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
             // $bot->replyMessage($token, $message);
             $result = $bot->replyMessage($event['replyToken'],$response);
+            var_dump($result);
             break;
           
           default:
