@@ -18,9 +18,10 @@ use \LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\SeparatorComponentBuilder
 use \LINE\LINEBot\Constant\Flex\ComponentLayout;
 use \LINE\LINEBot\Constant\Flex\ComponentFontWeight;
 use \LINE\LINEBot\Constant\Flex\ComponentSpacing;
+use \LINE\LINEBot\Constant\Flex\ComponentAlign;
 use \LINE\LINEBot\Constant\Flex\ComponentButtonStyle;
 use \LINE\LINEBot\Constant\Flex\ComponentFontSize;
-
+use \LINE\LINEBot\Constant\Flex\ComponentMargin;
 
 use \LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
 use \LINE\LINEBot\MessageBuilder\TemplateBuilder\ConfirmTemplateBuilder;
@@ -97,30 +98,102 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 ->setAltText('test')
                 ->setContents(
                     BubbleContainerBuilder::builder()
-                    ->setHeader(
+                    ->setBody(
                         BoxComponentBuilder::builder()
                         ->setLayout(ComponentLayout::VERTICAL)
+                        ->setSpacing(ComponentSpacing::SM)
                         ->setContents([
+                          TextComponentBuilder::builder()
+                              ->setText('Covid-19')
+                              ->setSize(ComponentFontSize::SM)
+                              ->setWeight(ComponentFontWeight::BOLD)
+                              ->setColor('#1DB446'),
+                          TextComponentBuilder::builder()
+                              ->setText($rawResponse->Country_Region)
+                              ->setWeight(ComponentFontWeight::BOLD)
+                              ->setSize(ComponentFontSize::XXL),
+                          SeparatorComponentBuilder::builder()
+                            ->setMargin(ComponentMargin::XXL),
+
+                          BoxComponentBuilder::builder()
+                            ->setLayout(ComponentLayout::HORIZONTAL)
+                            ->setContents([
+                              TextComponentBuilder::builder()
+                                ->setText("Jumlah Kasus")
+                                ->setColor('#555555')
+                                ->setSize(ComponentFontSize::SM),
+                              TextComponentBuilder::builder()
+                                ->setText($rawResponse->Confirmed)
+                                ->setColor('#111111')
+                                ->setAlign(ComponentAlign::END)
+                                ->setSize(ComponentFontSize::SM),
+                            ]),
+
+                          BoxComponentBuilder::builder()
+                          ->setLayout(ComponentLayout::HORIZONTAL)
+                          ->setContents([
                             TextComponentBuilder::builder()
-                                ->setText('Covid-19')
-                                ->setWeight(ComponentFontWeight::BOLD)
-                                ->setColor('#1DB446'),
+                              ->setText("Total Terinfeksi")
+                              ->setColor('#555555')
+                              ->setSize(ComponentFontSize::SM),
                             TextComponentBuilder::builder()
-                                ->setText($rawResponse->Country_Region)
-                                ->setWeight(ComponentFontWeight::BOLD)
-                                ->setSize(ComponentFontSize::XL)
-                                ->setColor('#17c950'),
-                        ])
+                              ->setText($rawResponse->Active)
+                              ->setColor('#111111')
+                              ->setAlign(ComponentAlign::END)
+                              ->setSize(ComponentFontSize::SM),
+                          ]),
+
+                          BoxComponentBuilder::builder()
+                            ->setLayout(ComponentLayout::HORIZONTAL)
+                            ->setContents([
+                              TextComponentBuilder::builder()
+                                ->setText("Total Sembuh")
+                                ->setColor('#555555')
+                                ->setSize(ComponentFontSize::SM),
+                              TextComponentBuilder::builder()
+                                ->setText($rawResponse->Recovered)
+                                ->setColor('#111111')
+                                ->setAlign(ComponentAlign::END)
+                                ->setSize(ComponentFontSize::SM),
+                            ]),
+
+                          BoxComponentBuilder::builder()
+                          ->setLayout(ComponentLayout::HORIZONTAL)
+                          ->setContents([
+                            TextComponentBuilder::builder()
+                              ->setText("Total Meninggal")
+                              ->setColor('#555555')
+                              ->setSize(ComponentFontSize::SM),
+                            TextComponentBuilder::builder()
+                              ->setText($rawResponse->Deaths)
+                              ->setColor('#111111')
+                              ->setAlign(ComponentAlign::END)
+                              ->setSize(ComponentFontSize::SM),
+                          ]),
+
+                          SeparatorComponentBuilder::builder()
+                            ->setMargin(ComponentMargin::XXL),
+
+                          BoxComponentBuilder::builder()
+                          ->setLayout(ComponentLayout::HORIZONTAL)
+                          ->setContents([
+                            TextComponentBuilder::builder()
+                              ->setText("UPDATE AT")
+                              ->setColor('#aaaaaa')
+                              ->setSize(ComponentFontSize::XS),
+                            TextComponentBuilder::builder()
+                              ->setText(date("Y-m-d H:i:s", substr( $rawResponse->Last_Update, 0, 10)))
+                              ->setColor('#aaaaaa')
+                              ->setAlign(ComponentAlign::END)
+                              ->setSize(ComponentFontSize::XS),
+                          ]),
+                      ])
                     )
                 );
-
             }
-
-            // $bot->replyMessage($token, $message);
             $result = $bot->replyMessage($event['replyToken'],$response);
             return $result;
             break;
-          
           default:
             # code...
             break;
