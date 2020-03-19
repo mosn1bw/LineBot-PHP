@@ -83,15 +83,8 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
             $parameter = isset($a[1]) ? $countryData[$a[1]] : '101';
             $data = file_get_contents('https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/1/query?f=json&where=(OBJECTID%3D'.$parameter.')&returnGeometry=false&spatialRef=esriSpatialRelIntersects&outFields=*&orderByFields=Country_Region%20asc,Province_State%20asc&resultOffset=0&resultRecordCount=250&cacheHint=false');
             $data= json_decode($data);
-            $response="";
-            foreach ($data->features as $value) {
-                $rawResponse = $value->attributes;
-                // $response.="Negara : ".$rawResponse->Country_Region."\n".
-                // "Jumlah Kasus : ".$rawResponse->Confirmed."\n".
-                // "Total Terinfeksi : ".$rawResponse->Active."\n".
-                // "Total Sembuh : ".$rawResponse->Recovered."\n".
-                // "Total Meninggal : ".$rawResponse->Deaths;
-                $response = FlexMessageBuilder::builder()
+            $rawResponse = $data->features[0]->attributes;
+            $response = FlexMessageBuilder::builder()
                 ->setAltText('test')
                 ->setContents(
                     BubbleContainerBuilder::builder()
@@ -120,7 +113,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setColor('#555555')
                                 ->setSize(ComponentFontSize::SM),
                               TextComponentBuilder::builder()
-                                ->setText("asda")
+                                ->setText($rawResponse->Confirmed)
                                 ->setColor('#111111')
                                 ->setAlign('end')
                                 ->setSize(ComponentFontSize::SM),
@@ -128,7 +121,6 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                       ])
                     )
                 );
-            }
             $result = $bot->replyMessage($event['replyToken'],$response);
             return $result;
             break;
