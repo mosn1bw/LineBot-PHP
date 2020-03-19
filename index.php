@@ -93,6 +93,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
               }
               $myfile = fopen("countryData.json", "w") or die("Unable to open file!");
               fwrite($myfile, json_encode($countryData));
+              $result = $bot->replyText($event['replyToken'],'Update Core Data.....');
             break;
 
           case '/covid':
