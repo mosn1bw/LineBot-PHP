@@ -8,8 +8,8 @@ foreach ($data->features as $value) {
     $countryData[strtolower($value->attributes->Country_Region)]['Lat']=number_format($value->attributes->Lat, 4, '.', '');
     $countryData[strtolower($value->attributes->Country_Region)]['Long_']=number_format($value->attributes->Long_, 4, '.', '');
   }else{
-    $countryData[strtolower($value->attributes->Country_Region.'@'.$value->attributes->Province_State)]['Lat']=number_format($value->attributes->Lat, 4, '.', '');
-    $countryData[strtolower($value->attributes->Country_Region.'@'.$value->attributes->Province_State)]['Long_']=number_format($value->attributes->Long_, 4, '.', '');
+    $countryData[strtolower($value->attributes->Country_Region.' at '.$value->attributes->Province_State)]['Lat']=number_format($value->attributes->Lat, 4, '.', '');
+    $countryData[strtolower($value->attributes->Country_Region.' at '.$value->attributes->Province_State)]['Long_']=number_format($value->attributes->Long_, 4, '.', '');
   }
 }
 $myfile = fopen("countryData.json", "w") or die("Unable to open file!");

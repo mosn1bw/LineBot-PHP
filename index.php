@@ -87,8 +87,8 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                   $countryData[strtolower($value->attributes->Country_Region)]['Lat']=number_format($value->attributes->Lat, 4, '.', '');
                   $countryData[strtolower($value->attributes->Country_Region)]['Long_']=number_format($value->attributes->Long_, 4, '.', '');
                 }else{
-                  $countryData[strtolower($value->attributes->Country_Region.'@'.$value->attributes->Province_State)]['Lat']=number_format($value->attributes->Lat, 4, '.', '');
-                  $countryData[strtolower($value->attributes->Country_Region.'@'.$value->attributes->Province_State)]['Long_']=number_format($value->attributes->Long_, 4, '.', '');
+                  $countryData[strtolower($value->attributes->Country_Region.' at '.$value->attributes->Province_State)]['Lat']=number_format($value->attributes->Lat, 4, '.', '');
+                  $countryData[strtolower($value->attributes->Country_Region.' at '.$value->attributes->Province_State)]['Long_']=number_format($value->attributes->Long_, 4, '.', '');
                 }
               }
               $myfile = fopen("countryData.json", "w") or die("Unable to open file!");
@@ -97,14 +97,20 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
             break;
 
           case '/covid':
-            $countryDataFile = fopen("countryData.json", "r") or die("Unable to open file!");
-            $countryData = json_decode(fgets($countryDataFile), true);
-            fclose($countryDataFile);
             $negara = isset($a[1]) ? $a[1] : 'indonesia';
-            $parameter = $countryData[strtolower(trim($negara))];
-            $data = file_get_contents('https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/1/query?f=json&where=(Lat%3D'.$parameter['Lat'].')%20OR%20(Long_%3D'.$parameter['Long_'].')&returnGeometry=false&spatialRef=esriSpatialRelIntersects&outFields=*&orderByFields=Country_Region%20asc,Province_State%20asc&resultOffset=0&resultRecordCount=250&cacheHint=false');
+            $data = file_get_contents("https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/1/query?f=json&where=(Country_Region%3D'$negara')&returnGeometry=false&spatialRef=esriSpatialRelIntersects&outFields=*&orderByFields=Country_Region%20asc,Province_State%20asc&resultOffset=0&resultRecordCount=250&cacheHint=false");
             $data= json_decode($data);
-            $rawResponse = $data->features[0]->attributes;
+            $total =0;
+            $positif =0;
+            $sembuh =0;
+            $mati =0;
+            foreach ( $data->features as $value) {
+              $rawResponse = $value->attributes;
+              $total +=$rawResponse->Confirmed;
+              $positif +=$rawResponse->Active;
+              $sembuh +=$rawResponse->Recovered;
+              $mati +=$rawResponse->Deaths;
+            }
             $response = FlexMessageBuilder::builder()
                 ->setAltText('test')
                 ->setContents(
@@ -128,7 +134,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
 
                           TextComponentBuilder::builder()
-                              ->setText($rawResponse->Confirmed." Kasus")
+                              ->setText($total." Kasus")
                               ->setWeight(ComponentFontWeight::BOLD)
                               ->setSize(ComponentFontSize::XL),
                           BoxComponentBuilder::builder()
@@ -139,7 +145,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               ->setColor('#555555')
                               ->setSize(ComponentFontSize::SM),
                             TextComponentBuilder::builder()
-                              ->setText($rawResponse->Active." ")
+                              ->setText($positif." ")
                               ->setColor('#111111')
                               ->setAlign('end')
                               ->setWeight(ComponentFontWeight::BOLD)
@@ -154,7 +160,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               ->setColor('#555555')
                               ->setSize(ComponentFontSize::SM),
                             TextComponentBuilder::builder()
-                              ->setText($rawResponse->Recovered." ")
+                              ->setText($sembuh." ")
                               ->setColor('#111111')
                               ->setWeight(ComponentFontWeight::BOLD)
                               ->setAlign('end')
@@ -168,7 +174,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setColor('#555555')
                                 ->setSize(ComponentFontSize::SM),
                               TextComponentBuilder::builder()
-                                ->setText($rawResponse->Deaths." ")
+                                ->setText($mati." ")
                                 ->setColor('#111111')
                                 ->setAlign('end')
                                 ->setWeight(ComponentFontWeight::BOLD)
@@ -184,7 +190,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setColor('#aaaaaa')
                                 ->setSize(ComponentFontSize::XS),
                               TextComponentBuilder::builder()
-                                ->setText(date("Y-m-d H:i:s", substr( $rawResponse->Last_Update, 0, 10))." ")
+                                ->setText(date("Y-m-d H:i:s", substr( $data->features[0]->Last_Update, 0, 10))." ")
                                 ->setColor('#aaaaaa')
                                 ->setAlign('end')
                                 ->setSize(ComponentFontSize::SM),
