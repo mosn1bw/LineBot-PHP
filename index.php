@@ -79,8 +79,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 // "Total Terinfeksi : ".$rawResponse->Active."\n".
                 // "Total Sembuh : ".$rawResponse->Recovered."\n".
                 // "Total Meninggal : ".$rawResponse->Deaths;
-                $response='
-                {
+                $response='{
                   "type": "bubble",
                   "body": {
                     "type": "box",
@@ -95,7 +94,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                       },
                       {
                         "type": "text",
-                        "text": "'.$rawResponse->Country_Region.'",
+                        "text": "Indonesia",
                         "weight": "bold",
                         "size": "xxl",
                         "margin": "md"
@@ -123,7 +122,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               },
                               {
                                 "type": "text",
-                                "text": "'.$rawResponse->Confirmed.'",
+                                "text": "11111",
                                 "size": "sm",
                                 "color": "#111111",
                                 "align": "end"
@@ -143,7 +142,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               },
                               {
                                 "type": "text",
-                                "text": "'.$rawResponse->Active.'",
+                                "text": "11111",
                                 "size": "sm",
                                 "color": "#111111",
                                 "align": "end"
@@ -163,7 +162,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               },
                               {
                                 "type": "text",
-                                "text": "'.$rawResponse->Recovered.'",
+                                "text": "11111",
                                 "size": "sm",
                                 "color": "#111111",
                                 "align": "end"
@@ -183,7 +182,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               },
                               {
                                 "type": "text",
-                                "text": "'.$rawResponse->Deaths.'",
+                                "text": "999",
                                 "size": "sm",
                                 "color": "#111111",
                                 "align": "end"
@@ -203,14 +202,14 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                         "contents": [
                           {
                             "type": "text",
-                            "text": "Last Update",
+                            "text": "UPDATE AT",
                             "size": "xs",
                             "color": "#aaaaaa",
                             "flex": 0
                           },
                           {
                             "type": "text",
-                            "text": "'.date("Y-m-d H:i:s", substr( $rawResponse->Last_Update, 0, 10)).'",
+                            "text": "#743289384279",
                             "color": "#aaaaaa",
                             "size": "xs",
                             "align": "end"
