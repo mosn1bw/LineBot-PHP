@@ -8,6 +8,20 @@ use \LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use \LINE\LINEBot\MessageBuilder\StickerMessageBuilder;
 use \LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
 use \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
+use \LINE\LINEBot\MessageBuilder\FlexMessageBuilder;
+use \LINE\LINEBot\MessageBuilder\Flex\ContainerBuilder\BubbleContainerBuilder;
+use \LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\BoxComponentBuilder;
+use \LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\TextComponentBuilder;
+use \LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\SeparatorComponentBuilder;
+
+
+use \LINE\LINEBot\Constant\Flex\ComponentLayout;
+use \LINE\LINEBot\Constant\Flex\ComponentFontWeight;
+use \LINE\LINEBot\Constant\Flex\ComponentSpacing;
+use \LINE\LINEBot\Constant\Flex\ComponentButtonStyle;
+use \LINE\LINEBot\Constant\Flex\ComponentFontSize;
+
+
 use \LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
 use \LINE\LINEBot\MessageBuilder\TemplateBuilder\ConfirmTemplateBuilder;
 use \LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselTemplateBuilder;
@@ -94,7 +108,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                             TextComponentBuilder::builder()
                                 ->setText($rawResponse->Country_Region)
                                 ->setWeight(ComponentFontWeight::BOLD)
-                                ->setSize("xxl")
+                                ->setSize(ComponentFontSize::XL)
                                 ->setColor('#17c950'),
                         ])
                     )
