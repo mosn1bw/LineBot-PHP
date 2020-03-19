@@ -225,8 +225,18 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                   }
                 }';
             }
-            
-            $result = $bot->replyText($event['replyToken'],$response);
+              
+            $result = $httpClient->post(
+              'https://api.line.me/v2/bot/message/reply', [
+                'replyToken' => $event['replyToken'],
+                'messages'   => [[
+                  'type'     => 'flex',
+                  'altText'  => 'Covid',
+                  'contents' => json_decode($response)
+                ]],
+              ]
+            );
+            // $result = $bot->replyText($event['replyToken'],$response);
             break;
           
           default:
