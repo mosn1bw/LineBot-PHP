@@ -64,9 +64,6 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
   if(is_array($data['events'])){
     foreach ($data['events'] as $event){
       if ($event['type'] == 'message'){
-        // $getprofile = $bot->getProfile($userId);
-        // $profile    = $getprofile->getJSONDecodedBody();
-        // $greetings  = new TextMessageBuilder("Halo, ".$profile['displayName']);
         $a = (explode('-',$event['message']['text']));
         switch ($a[0]) {
           case '/userid':
@@ -128,65 +125,6 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setAlign(ComponentAlign::END)
                                 ->setSize(ComponentFontSize::SM),
                             ]),
-
-                          BoxComponentBuilder::builder()
-                          ->setLayout(ComponentLayout::HORIZONTAL)
-                          ->setContents([
-                            TextComponentBuilder::builder()
-                              ->setText("Total Terinfeksi")
-                              ->setColor('#555555')
-                              ->setSize(ComponentFontSize::SM),
-                            TextComponentBuilder::builder()
-                              ->setText($rawResponse->Active)
-                              ->setColor('#111111')
-                              ->setAlign(ComponentAlign::END)
-                              ->setSize(ComponentFontSize::SM),
-                          ]),
-
-                          BoxComponentBuilder::builder()
-                            ->setLayout(ComponentLayout::HORIZONTAL)
-                            ->setContents([
-                              TextComponentBuilder::builder()
-                                ->setText("Total Sembuh")
-                                ->setColor('#555555')
-                                ->setSize(ComponentFontSize::SM),
-                              TextComponentBuilder::builder()
-                                ->setText($rawResponse->Recovered)
-                                ->setColor('#111111')
-                                ->setAlign(ComponentAlign::END)
-                                ->setSize(ComponentFontSize::SM),
-                            ]),
-
-                          BoxComponentBuilder::builder()
-                          ->setLayout(ComponentLayout::HORIZONTAL)
-                          ->setContents([
-                            TextComponentBuilder::builder()
-                              ->setText("Total Meninggal")
-                              ->setColor('#555555')
-                              ->setSize(ComponentFontSize::SM),
-                            TextComponentBuilder::builder()
-                              ->setText($rawResponse->Deaths)
-                              ->setColor('#111111')
-                              ->setAlign(ComponentAlign::END)
-                              ->setSize(ComponentFontSize::SM),
-                          ]),
-
-                          SeparatorComponentBuilder::builder()
-                            ->setMargin(ComponentMargin::XXL),
-
-                          BoxComponentBuilder::builder()
-                          ->setLayout(ComponentLayout::HORIZONTAL)
-                          ->setContents([
-                            TextComponentBuilder::builder()
-                              ->setText("UPDATE AT")
-                              ->setColor('#aaaaaa')
-                              ->setSize(ComponentFontSize::XS),
-                            TextComponentBuilder::builder()
-                              ->setText(date("Y-m-d H:i:s", substr( $rawResponse->Last_Update, 0, 10)))
-                              ->setColor('#aaaaaa')
-                              ->setAlign(ComponentAlign::END)
-                              ->setSize(ComponentFontSize::XS),
-                          ]),
                       ])
                     )
                 );
