@@ -120,7 +120,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setColor('#555555')
                                 ->setSize(ComponentFontSize::SM),
                               TextComponentBuilder::builder()
-                                ->setText($rawResponse->Confirmed)
+                                ->setText("asda")
                                 ->setColor('#111111')
                                 ->setAlign('end')
                                 ->setSize(ComponentFontSize::SM),
