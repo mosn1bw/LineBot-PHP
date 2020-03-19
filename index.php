@@ -64,9 +64,9 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
   if(is_array($data['events'])){
     foreach ($data['events'] as $event){
       if ($event['type'] == 'message'){
-        $getprofile = $bot->getProfile($userId);
-        $profile    = $getprofile->getJSONDecodedBody();
-        $greetings  = new TextMessageBuilder("Halo, ".$profile['displayName']);
+        // $getprofile = $bot->getProfile($userId);
+        // $profile    = $getprofile->getJSONDecodedBody();
+        // $greetings  = new TextMessageBuilder("Halo, ".$profile['displayName']);
         $a = (explode('-',$event['message']['text']));
         switch ($a[0]) {
           case '/userid':
