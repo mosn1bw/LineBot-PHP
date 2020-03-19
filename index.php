@@ -83,7 +83,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
             $countryData = json_decode(fgets($countryDataFile), true);
             fclose($countryDataFile);
             $negara = isset($a[1]) ? $a[1] : 'indonesia';
-            $parameter = $countryData[strtolower($negara)];
+            $parameter = $countryData[strtolower(trim($negara))];
             $data = file_get_contents('https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/1/query?f=json&where=(OBJECTID%3D'.$parameter.')&returnGeometry=false&spatialRef=esriSpatialRelIntersects&outFields=*&orderByFields=Country_Region%20asc,Province_State%20asc&resultOffset=0&resultRecordCount=250&cacheHint=false');
             $data= json_decode($data);
             $rawResponse = $data->features[0]->attributes;
@@ -119,6 +119,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setText($rawResponse->Confirmed." ")
                                 ->setColor('#111111')
                                 ->setAlign('end')
+                                ->setWeight(ComponentFontWeight::BOLD)
                                 ->setSize(ComponentFontSize::SM),
                             ]),
 
@@ -133,6 +134,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               ->setText($rawResponse->Active." ")
                               ->setColor('#111111')
                               ->setAlign('end')
+                              ->setWeight(ComponentFontWeight::BOLD)
                               ->setSize(ComponentFontSize::SM),
                           ]),
 
@@ -146,6 +148,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                             TextComponentBuilder::builder()
                               ->setText($rawResponse->Recovered." ")
                               ->setColor('#111111')
+                              ->setWeight(ComponentFontWeight::BOLD)
                               ->setAlign('end')
                               ->setSize(ComponentFontSize::SM),
                           ]),
@@ -160,6 +163,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setText($rawResponse->Deaths." ")
                                 ->setColor('#111111')
                                 ->setAlign('end')
+                                ->setWeight(ComponentFontWeight::BOLD)
                                 ->setSize(ComponentFontSize::SM),
                             ]),
 
