@@ -123,7 +123,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                           ->setLayout(ComponentLayout::HORIZONTAL)
                           ->setContents([
                             TextComponentBuilder::builder()
-                              ->setText("positif")
+                              ->setText("Positif")
                               ->setColor('#555555')
                               ->setSize(ComponentFontSize::SM),
                             TextComponentBuilder::builder()
