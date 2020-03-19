@@ -118,7 +118,12 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               TextComponentBuilder::builder()
                                 ->setText("Jumlah Kasus")
                                 ->setColor('#555555')
-                                ->setSize(ComponentFontSize::SM)
+                                ->setSize(ComponentFontSize::SM),
+                              TextComponentBuilder::builder()
+                                ->setText($rawResponse->Confirmed)
+                                ->setColor('#111111')
+                                ->setAlign(ComponentAlign::END)
+                                ->setSize(ComponentFontSize::SM),
                             ]),
                       ])
                     )
