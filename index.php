@@ -135,7 +135,21 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                           ->setLayout(ComponentLayout::HORIZONTAL)
                           ->setContents([
                             TextComponentBuilder::builder()
-                              ->setText("Positif")
+                              ->setText("New Cases")
+                              ->setColor('#555555')
+                              ->setSize(ComponentFontSize::SM),
+                            TextComponentBuilder::builder()
+                              ->setText($datanow['New Cases']."")
+                              ->setColor('#111111')
+                              ->setAlign('end')
+                              ->setWeight(ComponentFontWeight::BOLD)
+                              ->setSize(ComponentFontSize::SM),
+                          ]),
+                          BoxComponentBuilder::builder()
+                          ->setLayout(ComponentLayout::HORIZONTAL)
+                          ->setContents([
+                            TextComponentBuilder::builder()
+                              ->setText("Active Cases")
                               ->setColor('#555555')
                               ->setSize(ComponentFontSize::SM),
                             TextComponentBuilder::builder()
@@ -145,12 +159,11 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               ->setWeight(ComponentFontWeight::BOLD)
                               ->setSize(ComponentFontSize::SM),
                           ]),
-
                           BoxComponentBuilder::builder()
                           ->setLayout(ComponentLayout::HORIZONTAL)
                           ->setContents([
                             TextComponentBuilder::builder()
-                              ->setText("Sembuh")
+                              ->setText("Total Recovered")
                               ->setColor('#555555')
                               ->setSize(ComponentFontSize::SM),
                             TextComponentBuilder::builder()
@@ -164,7 +177,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                             ->setLayout(ComponentLayout::HORIZONTAL)
                             ->setContents([
                               TextComponentBuilder::builder()
-                                ->setText("Meninggal")
+                                ->setText("Total Deaths")
                                 ->setColor('#555555')
                                 ->setSize(ComponentFontSize::SM),
                               TextComponentBuilder::builder()
@@ -174,6 +187,20 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setWeight(ComponentFontWeight::BOLD)
                                 ->setSize(ComponentFontSize::SM),
                             ]),
+                          BoxComponentBuilder::builder()
+                          ->setLayout(ComponentLayout::HORIZONTAL)
+                          ->setContents([
+                            TextComponentBuilder::builder()
+                              ->setText("New Deaths")
+                              ->setColor('#555555')
+                              ->setSize(ComponentFontSize::SM),
+                            TextComponentBuilder::builder()
+                              ->setText($datanow['New Deaths']."")
+                              ->setColor('#111111')
+                              ->setAlign('end')
+                              ->setWeight(ComponentFontWeight::BOLD)
+                              ->setSize(ComponentFontSize::SM),
+                          ]),
                           SeparatorComponentBuilder::builder()
                             ->setMargin(ComponentMargin::XXL),
                           BoxComponentBuilder::builder()
@@ -189,7 +216,6 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setAlign('end')
                                 ->setSize(ComponentFontSize::SM),
                             ]),
-                          
                           BoxComponentBuilder::builder()
                           ->setLayout(ComponentLayout::HORIZONTAL)
                           ->setContents([
