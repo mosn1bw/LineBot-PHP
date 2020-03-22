@@ -18,7 +18,7 @@ if (!isset($countryData[date("Y-m-d")])){
         $dataCountry['New Deaths'] = trim(strip_tags($raw[4]));
         $dataCountry['Total Recovered'] = trim(strip_tags($raw[5]));
         $dataCountry['Active Cases'] = trim(strip_tags($raw[6]));
-        $alldata[strtolower(strip_tags($raw[0]))] =$dataCountry;
+        $alldata[str_replace(':','',strtolower(strip_tags($raw[0])))] =$dataCountry;
     }
     $countryData[date("Y-m-d")]=$alldata;
     $myfile = fopen("covidData.json", "w") or die("Unable to open file!");

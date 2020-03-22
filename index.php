@@ -98,7 +98,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                     $dataCountry['New Deaths'] = trim(strip_tags($raw[4]));
                     $dataCountry['Total Recovered'] = trim(strip_tags($raw[5]));
                     $dataCountry['Active Cases'] = trim(strip_tags($raw[6]));
-                    $alldata[strtolower(strip_tags($raw[0]))] =$dataCountry;
+                    $alldata[str_replace(':','',strtolower(strip_tags($raw[0])))] =$dataCountry;
                 }
                 $countryData[date("Y-m-d")]=$alldata;
                 $myfile = fopen("covidData.json", "w") or die("Unable to open file!");
@@ -184,7 +184,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setColor('#aaaaaa')
                                 ->setSize(ComponentFontSize::XS),
                               TextComponentBuilder::builder()
-                                ->setText(date("Y-m-d H:i:s", substr($data->features[0]->attributes->Last_Update, 0, 10))." ")
+                                ->setText(date("Y-m-d")."")
                                 ->setColor('#aaaaaa')
                                 ->setAlign('end')
                                 ->setSize(ComponentFontSize::SM),
@@ -225,7 +225,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                     $dataCountry['New Deaths'] = trim(strip_tags($raw[4]));
                     $dataCountry['Total Recovered'] = trim(strip_tags($raw[5]));
                     $dataCountry['Active Cases'] = trim(strip_tags($raw[6]));
-                    $alldata[strtolower(strip_tags($raw[0]))] =$dataCountry;
+                    $alldata[str_replace(':','',strtolower(strip_tags($raw[0])))] =$dataCountry;
                 }
                 $countryData[date("Y-m-d")]=$alldata;
                 $myfile = fopen("covidData.json", "w") or die("Unable to open file!");
