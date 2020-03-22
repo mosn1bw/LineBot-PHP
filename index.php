@@ -79,21 +79,35 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
             break;
 
           case '/covid':
-            $negara = isset($a[1]) ? $a[1] : 'indonesia';
-            $data = file_get_contents("https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/1/query?f=json&where=(Country_Region%3D'$negara')&returnGeometry=false&spatialRef=esriSpatialRelIntersects&outFields=*&orderByFields=Country_Region%20asc,Province_State%20asc&resultOffset=0&resultRecordCount=250&cacheHint=false");
-            $data= json_decode($data);
-            $total =0;
-            $positif =0;
-            $sembuh =0;
-            $mati =0;
-            foreach ( $data->features as $value) {
-              $rawResponse = $value->attributes;
-              $total +=$rawResponse->Confirmed;
-              $positif +=$rawResponse->Active;
-              $sembuh +=$rawResponse->Recovered;
-              $mati +=$rawResponse->Deaths;
-            }
-            $response = FlexMessageBuilder::builder()
+            $countryDataFile = fopen("covidData.json", "r") or die("Unable to open file!");
+            $countryData = json_decode(fgets($countryDataFile), true);
+            fclose($countryDataFile);
+            if (!isset($countryData[date("Y-m-d")])){
+                require 'extend.php';
+                $url= "https://www.worldometers.info/coronavirus/";
+                $page_html= disguise_curl($url);
+                $result_html= getHTMLByClass('table table-bordered table-hover main_table_countries', $page_html);
+                $datatr= getHTMLByTag('tr', $result_html[0]);
+                $alldata =[];
+                for ($i=1; $i <count($datatr); $i++) {
+                    $raw= getHTMLByTag('td', $datatr[$i]);
+                    $dataCountry = [];
+                    $dataCountry['Total Cases'] = trim(strip_tags($raw[1]));
+                    $dataCountry['New Cases'] = trim(strip_tags($raw[2]));
+                    $dataCountry['Total Deaths'] = trim(strip_tags($raw[3]));
+                    $dataCountry['New Deaths'] = trim(strip_tags($raw[4]));
+                    $dataCountry['Total Recovered'] = trim(strip_tags($raw[5]));
+                    $dataCountry['Active Cases'] = trim(strip_tags($raw[6]));
+                    $alldata[strtolower(strip_tags($raw[0]))] =$dataCountry;
+                }
+                $countryData[date("Y-m-d")]=$alldata;
+                $myfile = fopen("covidData.json", "w") or die("Unable to open file!");
+                fwrite($myfile, json_encode($countryData));
+                fclose($myfile);
+            }else{
+              $negara = isset($a[1]) ? $a[1] : 'indonesia';
+              $datanow= $countryData[date("Y-m-d")][$negara];
+              $response = FlexMessageBuilder::builder()
                 ->setAltText('test')
                 ->setContents(
                     BubbleContainerBuilder::builder()
@@ -108,15 +122,13 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               ->setWeight(ComponentFontWeight::BOLD)
                               ->setColor('#1DB446'),
                           TextComponentBuilder::builder()
-                              ->setText($rawResponse->Country_Region)
+                              ->setText(strtoupper($negara)."")
                               ->setWeight(ComponentFontWeight::BOLD)
                               ->setSize(ComponentFontSize::XXL),
                           SeparatorComponentBuilder::builder()
                             ->setMargin(ComponentMargin::XXL),
-
-
                           TextComponentBuilder::builder()
-                              ->setText($total." Kasus")
+                              ->setText($datanow['Total Cases']." Kasus")
                               ->setWeight(ComponentFontWeight::BOLD)
                               ->setSize(ComponentFontSize::XL),
                           BoxComponentBuilder::builder()
@@ -127,7 +139,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               ->setColor('#555555')
                               ->setSize(ComponentFontSize::SM),
                             TextComponentBuilder::builder()
-                              ->setText($positif." ")
+                              ->setText($datanow['Active Cases']."")
                               ->setColor('#111111')
                               ->setAlign('end')
                               ->setWeight(ComponentFontWeight::BOLD)
@@ -142,7 +154,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                               ->setColor('#555555')
                               ->setSize(ComponentFontSize::SM),
                             TextComponentBuilder::builder()
-                              ->setText($sembuh." ")
+                              ->setText($datanow['Total Recovered']."")
                               ->setColor('#111111')
                               ->setWeight(ComponentFontWeight::BOLD)
                               ->setAlign('end')
@@ -156,7 +168,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                                 ->setColor('#555555')
                                 ->setSize(ComponentFontSize::SM),
                               TextComponentBuilder::builder()
-                                ->setText($mati." ")
+                                ->setText($datanow['Total Deaths']."")
                                 ->setColor('#111111')
                                 ->setAlign('end')
                                 ->setWeight(ComponentFontWeight::BOLD)
@@ -183,18 +195,43 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                           ->setContents([
                             ButtonComponentBuilder::builder()
                               ->setStyle(ComponentButtonStyle::PRIMARY)
-                              ->setAction(
-                                new MessageTemplateActionBuilder('Update', '/covid-'.$negara)
-                              )
+                              ->setAction(new MessageTemplateActionBuilder('Update', '/covid-'.$negara))
                           ]),
                       ])
-                    )
-                );
-            $result = $bot->replyMessage($event['replyToken'],$response);
+                    ));
+              $result = $bot->replyMessage($event['replyToken'],$response);
+            }
+
             return $result;
             break;
           default:
             # code...
+            $countryDataFile = fopen("covidData.json", "r") or die("Unable to open file!");
+            $countryData = json_decode(fgets($countryDataFile), true);
+            fclose($countryDataFile);
+            if (!isset($countryData[date("Y-m-d")])){
+                require 'extend.php';
+                $url= "https://www.worldometers.info/coronavirus/";
+                $page_html= disguise_curl($url);
+                $result_html= getHTMLByClass('table table-bordered table-hover main_table_countries', $page_html);
+                $datatr= getHTMLByTag('tr', $result_html[0]);
+                $alldata =[];
+                for ($i=1; $i <count($datatr); $i++) {
+                    $raw= getHTMLByTag('td', $datatr[$i]);
+                    $dataCountry = [];
+                    $dataCountry['Total Cases'] = trim(strip_tags($raw[1]));
+                    $dataCountry['New Cases'] = trim(strip_tags($raw[2]));
+                    $dataCountry['Total Deaths'] = trim(strip_tags($raw[3]));
+                    $dataCountry['New Deaths'] = trim(strip_tags($raw[4]));
+                    $dataCountry['Total Recovered'] = trim(strip_tags($raw[5]));
+                    $dataCountry['Active Cases'] = trim(strip_tags($raw[6]));
+                    $alldata[strtolower(strip_tags($raw[0]))] =$dataCountry;
+                }
+                $countryData[date("Y-m-d")]=$alldata;
+                $myfile = fopen("covidData.json", "w") or die("Unable to open file!");
+                fwrite($myfile, json_encode($countryData));
+                fclose($myfile);
+            }
             break;
         }
       }
