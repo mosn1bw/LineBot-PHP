@@ -1,15 +1,9 @@
 {
-  "name": "LineBotphp",
-  "description": "Line Bot php",
-  "repository": "https://github.com/mosn1bw/LineBot-PHP",
-  "keywords": ["Line", "go", "static"],
-  "buildpacks": [
-    {
-      "url": "https://github.com/heroku/php-getting-started"
-    },
-    {
-      "url": "heroku/php"
-    }
+  "name": "Start on Heroku: PHP",
+  "description": "A barebones PHP app that makes use of the Silex web framework",
+  "repository": "https://github.com/heroku/php-getting-started",
+  "addons": []
+}
   ],
   "env": {
     "ChannelAccessToken": {
