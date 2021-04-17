@@ -4,8 +4,6 @@
   "repository": "https://github.com/heroku/php-getting-started",
   "addons": [
 {
-    {
-      "url": "heroku/php"
     }
   ],
   "env": {
@@ -18,5 +16,4 @@
       "required": true
     }
   }
-}
 }
